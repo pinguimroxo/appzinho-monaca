@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(145deg, #101a3a, #3158a5);
+      color: white;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 390px;
+      text-align: center;
+    }
+
+    .logo { font-size: 48px; }
+
+    h1 { margin-bottom: 8px; }
+
+    .subtitulo {
+      color: #d4def5;
+      margin-bottom: 28px;
+    }
+
+    input, button {
+      width: 100%;
+      padding: 15px;
+      margin-top: 12px;
+      border-radius: 12px;
+      font-size: 16px;
+    }
+
+    input {
+      border: 1px solid #d5dced;
+      background: white;
+      color: #172554;
+    }
+
+    button {
+      border: none;
+      background: #55dfb2;
+      color: #10233b;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    a {
+      color: #8af3d1;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    #mensagem {
+      color: #ffe0e0;
+      font-size: 14px;
+    }
+
+    .rodape { margin-top: 24px; }
+  </style>
+</head>
+
+<body>
+  <main class="container">
+    <div class="logo">✦</div>
+    <h1>Bem-vindo!</h1>
+    <p class="subtitulo">Entre para continuar sua experiência.</p>
+
+    <form id="loginForm">
+      <input
+        type="email"
+        id="email"
+        placeholder="Seu e-mail"
+        autocomplete="email"
+        required
+      >
+
+      <input
+        type="password"
+        id="senha"
+        placeholder="Sua senha"
+        autocomplete="current-password"
+        required
+      >
+
+      <button type="submit">Entrar</button>
+      <p id="mensagem" role="status"></p>
+    </form>
+
+    <p class="rodape">
+      Ainda não tem conta?
+      <a href="cadastro.html">Cadastre-se</a>
+    </p>
+  </main>
+
+  <script>
+    document.getElementById('loginForm')
+      .addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const email = document.getElementById('email')
+          .value.trim().toLowerCase();
+
+        const senha = document.getElementById('senha').value;
+
+        const usuarios = JSON.parse(
+          localStorage.getItem('usuarios') || '[]'
+        );
+
+        const usuario = usuarios.find(function(u) {
+          return u.email.toLowerCase() === email &&
+                 u.senha === senha;
+        });
+
+        if (usuario) {
+          sessionStorage.setItem(
+            'usuarioLogado',
+            usuario.email
+          );
+              window.location.href = 'home.html';
+        } else {
+          document.getElementById('mensagem').textContent =
+            'E-mail ou senha incorretos!';
+        }
+      });
+  </script>
+</body>
+</html>

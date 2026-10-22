@@ -1,0 +1,277 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Home</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f3f6fc;
+      color: #172554;
+    }
+
+    header {
+      background: linear-gradient(135deg, #172554, #3158a5);
+      padding: 28px 22px 35px;
+      color: white;
+      border-radius: 0 0 28px 28px;
+    }
+
+    header p {
+      color: #dbeafe;
+    }
+
+    .perfil {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    .avatar {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: #55dfb2;
+      color: #172554;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 25px;
+      font-weight: bold;
+    }
+
+    main {
+      max-width: 650px;
+      margin: auto;
+      padding: 22px;
+    }
+
+    .titulo {
+      margin: 12px 0 16px;
+    }
+
+    .destaque {
+      background: #dff8ef;
+      padding: 22px;
+      border-radius: 18px;
+      margin-bottom: 25px;
+    }
+
+    .destaque h2 {
+      margin-top: 0;
+      color: #115e59;
+    }
+
+    .grade {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      background: white;
+      padding: 18px 14px;
+      border-radius: 16px;
+      box-shadow: 0 4px 14px #1725540d;
+      min-width: 0;
+    }
+
+    .icone {
+      font-size: 29px;
+      margin-bottom: 12px;
+    }
+
+    .card h3 {
+      font-size: 16px;
+      margin: 5px 0 8px;
+    }
+
+    .card p {
+      color: #64748b;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    button {
+      border: none;
+      border-radius: 10px;
+      padding: 12px;
+      background: #3158a5;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .destaque button {
+      background: #0f766e;
+    }
+
+    .acoes {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 25px;
+    }
+
+    .botao-claro {
+      background: white;
+      color: #172554;
+      border: 1px solid #dbe3f0;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #64748b;
+      font-size: 12px;
+    }
+
+    @media (max-width: 340px) {
+      .grade {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <span>MEU APLICATIVO</span>
+
+    <div class="perfil">
+      <div class="avatar" id="avatar">U</div>
+      <div>
+        <h2 style="margin:0">
+          Olá, <span id="nomeUsuario">Usuário</span>!
+        </h2>
+        <p style="margin-bottom:0">
+          Bem-vindo à sua página inicial.
+        </p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="destaque">
+      <h2>✨ Tudo pronto!</h2>
+      <p>
+        Você entrou na sua conta. Explore as opções
+        disponíveis no seu aplicativo.
+      </p>
+      <button onclick="mostrarMensagem('Seja bem-vindo à Home!')">
+        Começar
+      </button>
+    </section>
+
+    <h2 class="titulo">Explorar</h2>
+
+    <section class="grade">
+      <article class="card">
+        <div class="icone">👤</div>
+        <h3>Meu perfil</h3>
+        <p>Confira os dados da sua conta.</p>
+        <button onclick="verPerfil()">Ver perfil</button>
+      </article>
+
+      <article class="card">
+        <div class="icone">🔔</div>
+        <h3>Notificações</h3>
+        <p>Veja os avisos do aplicativo.</p>
+        <button onclick="mostrarMensagem('Você não tem notificações novas.')">
+          Consultar
+        </button>
+      </article>
+
+      <article class="card">
+        <div class="icone">⭐</div>
+        <h3>Favoritos</h3>
+        <p>Acesse esta área personalizada.</p>
+        <button onclick="mostrarMensagem('Personalize sua área de favoritos.')">
+          Abrir
+        </button>
+      </article>
+
+      <article class="card">
+        <div class="icone">⚙️</div>
+        <h3>Configurações</h3>
+        <p>Opções da sua experiência.</p>
+        <button onclick="mostrarMensagem('Área de configurações em construção.')">
+          Configurar
+        </button>
+      </article>
+    </section>
+
+    <div class="acoes">
+      <button class="botao-claro" onclick="verPerfil()">
+        Meus dados
+      </button>
+
+      <button onclick="sair()">
+        Sair da conta
+      </button>
+    </div>
+  </main>
+
+  <footer>Meu Aplicativo · Página inicial</footer>
+
+  <script>
+    const emailLogado = sessionStorage.getItem('usuarioLogado');
+
+    if (!emailLogado) {
+      window.location.replace('index.html');
+    } else {
+      const usuarios = JSON.parse(
+        localStorage.getItem('usuarios') || '[]'
+      );
+
+      const usuario = usuarios.find(function(u) {
+        return u.email.toLowerCase() ===
+          emailLogado.toLowerCase();
+      });
+
+      if (!usuario) {
+        sessionStorage.removeItem('usuarioLogado');
+        window.location.replace('index.html');
+      } else {
+        document.getElementById('nomeUsuario').textContent =
+          usuario.nome;
+
+        document.getElementById('avatar').textContent =
+          usuario.nome.charAt(0).toUpperCase();
+      }
+    }
+
+    function mostrarMensagem(texto) {
+      alert(texto);
+    }
+
+    function verPerfil() {
+      const email = sessionStorage.getItem('usuarioLogado');
+      const usuarios = JSON.parse(
+        localStorage.getItem('usuarios') || '[]'
+      );
+      const usuario = usuarios.find(function(u) {
+        return u.email.toLowerCase() === email.toLowerCase();
+      });
+
+      if (usuario) {
+        alert('Nome: ' + usuario.nome + '\nE-mail: ' + usuario.email);
+      }
+    }
+
+    function sair() {
+      sessionStorage.removeItem('usuarioLogado');
+      window.location.replace('index.html');
+    }
+  </script>
+</body>
+</html>
